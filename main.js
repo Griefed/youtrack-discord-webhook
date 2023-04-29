@@ -18,9 +18,9 @@ exports.rule = entities.Issue.onChange({
       const body = new Body();
 
       try {
-		    body.title = issue.fields.State.name + " " + issue.id;
+	body.title = issue.fields.State.name + " " + issue.summary + " (" + issue.id + ")";
       } catch (error) {
-		    body.title = "Changed " + issue.id;
+	body.title = "Changed " + issue.summary + " (" + issue.id + ")";
       }
       
       body.description = issue.description;
