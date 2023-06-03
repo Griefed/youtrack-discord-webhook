@@ -16,14 +16,20 @@ exports.rule = entities.Issue.onChange({
       const payload = new Payload(null, CONFIG.SENDER_NAME, CONFIG.AVATAR_URL);
       const embed = new Embed();
       const body = new Body();
-
+      
       try {
-	body.title = issue.fields.State.name + " " + issue.summary + " (" + issue.id + ")";
+		body.title = issue.fields.State.name + " " + issue.summary + " (" + issue.id + ")";
       } catch (error) {
-	body.title = "Changed " + issue.summary + " (" + issue.id + ")";
+		body.title = "Changed " + issue.summary + " (" + issue.id + ")";
       }
       
-      body.description = issue.description;
+      if (issue.comments.added.isNotEmpty()) {
+        body.title = issue.comments.last().author.login + " commented " + issue.summary + " (" + issue.id + ")";
+        body.description = issue.comments.last().text;
+      } else {
+        body.description = issue.description;
+      }
+      
       body.url = issue.url;
 
       if (issue.becomesReported) {
